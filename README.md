@@ -5,8 +5,8 @@ Customized [Excavator](https://github.com/ScoopInstaller/Excavator) (Docker imag
 ## Usage
 
 1. Add following script:
-  - GitHub: `bin\bucket-updater.ps1` to your Bucket (see: [bucket-updater.ps1](#example-binbucket-updaterps1))
-  - Bitbucket, GitLab, etc: `bin\checkver.ps1` to your Bucket (see: [checkver.ps1](#example-bincheckverps1))
+    - GitHub: `bin\bucket-updater.ps1` to your Bucket (see: [bucket-updater.ps1](#example-binbucket-updaterps1))
+    - Bitbucket, GitLab, etc: `bin\checkver.ps1` to your Bucket (see: [checkver.ps1](#example-bincheckverps1))
 2. Edit `docker-compose.yml` (see: [docker-compose.yml](#example-docker-composeyml))
 3. Run `docker-compose up -d --build`
 4. Run `docker-compose exec /root/init_ssh.sh` to generate ssh key
@@ -24,7 +24,7 @@ The following Environment Variables are required for pushing changes to remote r
 BUCKET=<user>/<repo>        # GitHub/Bitbucket/etc Repo (e.g. lukesampson/scoop)
 GIT_USERNAME=               # For "git config user.name"
 GIT_EMAIL=                  # For "git config user.email"
-CRONTAB=0 * * * *           # Change cron execution times (default: every hour)
+CRONTAB=0 * * * *           # Change cron execution times
 REMOTE_HOST=                # host address (e.g. github.com)
 
 # Optional:
