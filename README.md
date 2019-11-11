@@ -85,4 +85,4 @@ volumes:
 
 ## License
 
-[The MIT License (MIT)](https://r15ch13.mit-license.org/)
+The MIT License (MIT)
