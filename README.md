@@ -4,13 +4,13 @@ Customized [Excavator](https://github.com/ScoopInstaller/Excavator) (Docker imag
 
 ## Usage
 
-- Add following script:
+1. Add following script:
   - GitHub: `bin\bucket-updater.ps1` to your Bucket (see: [bucket-updater.ps1](#example-binbucket-updaterps1))
   - Bitbucket, GitLab, etc: `bin\checkver.ps1` to your Bucket (see: [checkver.ps1](#example-bincheckverps1))
-- Edit `docker-compose.yml` (see: [docker-compose.yml](#example-docker-composeyml))
-- Run `docker-compose up -d --build`
-- Run `docker-compose exec /root/init_ssh.sh` to generate ssh key
-- Add the generated public key to your remote host service's account (see: ssh volume)
+2. Edit `docker-compose.yml` (see: [docker-compose.yml](#example-docker-composeyml))
+3. Run `docker-compose up -d --build`
+4. Run `docker-compose exec /root/init_ssh.sh` to generate ssh key
+5. Add the generated public key to your remote host service's account (see: ssh volume)
 
 ## What's difference?
 
