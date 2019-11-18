@@ -63,37 +63,42 @@ if [ ! -z $SNOWFLAKES ]; then
     ARGS="$ARGS -SpecialSnowflakes $SNOWFLAKES"
 fi
 
-if [ -f /root/bucket/bin/auto-pr.ps1 ]; then
-    pwsh /root/bucket/bin/auto-pr.ps1 $ARGS
-fi
-if [ -f /root/bucket/bin/bucket-updater.ps1 ]; then
-    pwsh /root/bucket/bin/bucket-updater.ps1 $ARGS
-elif [ -f /root/bucket/bin/checkver.ps1 ]; then
-    echo 'Updating each manifests ...'
-    cd /root/bucket
-    auto_commit() {
-        local json=$1
-        local name=$(echo -n $json | sed 's/\.[^\.]*$//')
-        local ver=$(jq -r '.version' $json)
-        local msg=$(printf '%s: Update to version %d' $name $ver)
-        pwsh /root/bucket/bin/checkver.ps1 -u $json
-        [ -z $(git status -s) ] && return
-        git add $json
-        git commit -m $msg
-        [ $? -ne 0 ] && git checkout .
-    }
-    export -f auto_commit
-    find *.json | xargs -I % bash -c "auto_commit" %
+if [ "$REMOTE_HOST" = 'github.com' ]; then
+    if [ -f /root/bucket/bin/auto-pr.ps1 ]; then
+        pwsh /root/bucket/bin/auto-pr.ps1 $ARGS
+    fi
+    if [ -f /root/bucket/bin/bucket-updater.ps1 ]; then
+        pwsh /root/bucket/bin/bucket-updater.ps1 $ARGS
+    fi
+else
+    if [ -f /root/bucket/bin/checkver.ps1 ]; then
+        echo 'Updating each manifests ...'
+        cd /root/bucket
+        auto_commit() {
+            local json=$1
+            local name=$(echo -n $json | sed 's/\.[^\.]*$//')
+            local ver=$(jq -r '.version' $json)
+            local msg=$(printf '%s: Update to version %d' $name $ver)
+            pwsh /root/bucket/bin/checkver.ps1 -u $json
+            [ -z $(git status -s) ] && return
+            git add $json
+            git commit -m $msg
+            [ $? -ne 0 ] && git checkout .
+        }
+        export -f auto_commit
+        find *.json | xargs -I % bash -c "auto_commit" %
 
-    if [ ! -z $(git status -bs | head -n1 | sed -E 's/[^0-9]*//g') ]; then
-        echo 'Pushing updates ...'
-        if [ -f /root/first_push ]; then
-            git push origin master
+        if [ ! -z $(git status -bs | head -n1 | sed -E 's/[^0-9]*//g') ]; then
+            echo 'Pushing updates ...'
+            if [ -f /root/first_push ]; then
+                git push origin master
+            else
+                git push -u origin master
+                touch /root/first_push
+            fi
         else
-            git push -u origin master
-            touch /root/first_push
+            echo 'All manifests are up to date.'
         fi
-    else
-        echo 'All manifests are up to date.'
     fi
 fi
+
