@@ -77,10 +77,10 @@ else
         auto_commit() {
             local json=$1
             local name=$(echo -n $json | sed 's/\.[^\.]*$//')
-            local ver=$(jq -r '.version' $json)
-            local msg=$(printf '%s: Update to version %d' $name $ver)
             pwsh /root/bucket/bin/checkver.ps1 -u $json
             [ -z $(git status -s) ] && return
+            local ver=$(jq -r '.version' $json)
+            local msg=$(printf '%s: Update to version %d' $name $ver)
             git add $json
             git commit -m $msg
             [ $? -ne 0 ] && git checkout .
