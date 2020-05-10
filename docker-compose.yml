@@ -9,10 +9,10 @@ services:
       - ssh:/root/.ssh
       - logs:/root/log
     environment:
-      GIT_USERNAME: "rkbk60"
-      GIT_EMAIL: "b8csmlplg@gmail.com"
-      BUCKET: "rkbk60/scoop-for-jp"
-      REMOTE_HOST: "bitbucket.org"
+      GIT_USERNAME: "dooteeen"
+      GIT_EMAIL: "do2te3n@gmail.com"
+      BUCKET: "dooteeen/scoop-for-jp"
+      REMOTE_HOST: "github.com"
       CRONTAB: "20 4 * * *"
 volumes:
   ssh:
